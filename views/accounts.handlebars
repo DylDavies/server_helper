@@ -1,0 +1,15 @@
+<h1>{{user.username}}</h1>
+
+<div class="jumbotron bounceInLeft animated">
+    <h2>Bio</h2>
+    <p class="lead">
+        {{user.bio}}
+    </p>
+</div>
+
+{{#if user.admin}}
+    <div class="jumbotron bounceInLeft animated">
+        <h2>Site Admin</h2>
+        <p class="lead">Contact me for help! I am one of the two managers on the discord server!</p>
+    </div>
+{{/if}}

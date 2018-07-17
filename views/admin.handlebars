@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>XLR8 OFFICIAL</title>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/animate.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+        <style>
+            body {
+                font-size: .875rem;
+            }
+
+            .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+            }
+
+            /*
+            * Sidebar
+            */
+
+            .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            }
+
+            .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+            }
+
+            @supports ((position: -webkit-sticky) or (position: sticky)) {
+            .sidebar-sticky {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+            }
+
+            .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            }
+
+            .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #999;
+            }
+
+            .sidebar .nav-link.active {
+            color: #007bff;
+            }
+
+            .sidebar .nav-link:hover .feather,
+            .sidebar .nav-link.active .feather {
+            color: inherit;
+            }
+
+            .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+            }
+
+            /*
+            * Content
+            */
+
+            [role="main"] {
+            padding-top: 48px; /* Space for fixed navbar */
+            }
+
+            /*
+            * Navbar
+            */
+
+            .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+            }
+
+            .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+            }
+
+            .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+            }
+
+            .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+            }
+
+            /*
+            * Utilities
+            */
+
+            .border-top { border-top: 1px solid #e5e5e5; }
+            .border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+            .box .chart{
+                position: relative;
+                width: 330px;
+                height: 330px;
+                margin: 0 auto;
+                text-align: center;
+                font-size: 100px;
+                line-height: 330px;
+            }
+
+            .box canvas{
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .box h3{
+                text-align: center;
+            }
+
+            .user-item{
+                font-size: 25px;
+                text-decoration: none;
+            }
+
+            a{
+                color: black;
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">XLR8 OFFICIAL</a>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/account/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" id="dashboard">
+                                    <span data-feather="home"></span>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="users">
+                                    <span data-feather="users"></span>
+                                    Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="reports">
+                                    <span data-feather="bar-chart-2"></span>
+                                    Reported Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="inte">
+                                    <span data-feather="layers"></span>
+                                    Partnered Servers
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div id="dashboardDiv">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Dashboard</h1>
+                            <h1 class="h3">New Users</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <span data-feather="calendar"></span>
+                                    Last 7 Days
+                                </button>
+                            </div>
+                        </div>
+
+                        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+                        {{#if we.day1}}
+                            <input type="hidden" id="day1N" value="{{we.day1.number}}">
+                            <input type="hidden" id="day1U" value="{{we.day1.users}}">
+                        {{/if}}
+                        {{#if we.day2}}
+                            <input type="hidden" id="day2N" value="{{we.day2.number}}">
+                            <input type="hidden" id="day2U" value="{{we.day2.users}}">
+                        {{/if}}
+                        {{#if we.day3}}
+                            <input type="hidden" id="day3N" value="{{we.day3.number}}">
+                            <input type="hidden" id="day3U" value="{{we.day3.users}}">
+                        {{/if}}
+                        {{#if we.day4}}
+                            <input type="hidden" id="day4N" value="{{we.day4.number}}">
+                            <input type="hidden" id="day4U" value="{{we.day4.users}}"> 
+                        {{/if}}
+                        {{#if we.day5}}
+                            <input type="hidden" id="day5N" value="{{we.day5.number}}">
+                            <input type="hidden" id="day5U" value="{{we.day5.users}}"> 
+                        {{/if}}
+                        {{#if we.day6}}
+                            <input type="hidden" id="day6N" value="{{we.day6.number}}">
+                            <input type="hidden" id="day6U" value="{{we.day6.users}}"> 
+                        {{/if}}
+                        {{#if we.day7}}
+                            <input type="hidden" id="day7N" value="{{we.day7.number}}">
+                            <input type="hidden" id="day7U" value="{{we.day7.users}}"> 
+                        {{/if}}
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Total Users Goal</h1>
+                        </div>
+                        <div class="box">
+                            <div class="chart" data-percent="{{percent}}">{{percent}}%</div>
+                            <h3><strong>{{members}}</strong>/{{goal}}</h3>
+                        </div>
+                    </div>
+                    <div id="usersDiv" style="display:none;">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2" id="title">Users</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                        <a class="dropdown-item" id="botsBtn">Bots</a>
+                                        <a class="dropdown-item" id="usersBtn" style="display:none;">Users</a>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <ul>
+                            <div id="user-list">
+                            {{#each users}}
+                                <div class="list-item">
+                                    <li class="user-item">
+                                        <a href="/server/user/{{this.user.id}}"><strong>{{this.user.username}}</strong></a>
+                                        <br>
+                                        <a href="/server/user/kick/{{this.user.id}}">
+                                            <span class="btn btn-warning">
+                                                <img src="/images/boot.png" width="24px" height="24px">
+                                            </span>
+                                        </a>
+                                        <a href="/server/user/ban/{{this.user.id}}">
+                                            <span class="btn btn-danger">
+                                                <img src="/images/hammer.png" width="24px" height="24px">
+                                            </span>
+                                        </a>
+                                    </li>
+                                </div>
+                            {{/each}}
+                            </div>
+                            <div id="bot-div" style="display:none">
+                            {{#each bots}}
+                                <div class="list-item">
+                                    <li class="user-item">
+                                        <a>
+                                            <strong>{{this.user.username}}</strong>
+                                        </a>
+                                        <br>
+                                        <a href="/server/user/kick/{{this.user.id}}">
+                                            <span class="btn btn-warning">
+                                                <img src="/images/boot.png" width="24px" height="24px">
+                                            </span>
+                                        </a>
+                                        <a href="/server/user/ban/{{this.user.id}}">
+                                            <span class="btn btn-danger">
+                                                <img src="/images/hammer.png" width="24px" height="24px">
+                                            </span>
+                                        </a>
+                                    </li>
+                                </div>
+                            {{/each}}
+                            </div>
+                        </ul>
+                    </div>
+                    <div id="reportsDiv" style="display:none;">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Reported Users</h1>
+                        </div>
+                        Coming Soon
+                    </div>
+                    <div id="inteDiv" style="display:none;">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Partnered Servers</h1>
+                        </div>
+                        None so far...
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+        <script src="https://unpkg.com/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+        <script src="/js/bootstrap.js"></script>
+
+        <!-- Icons -->
+        <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+        <script>
+            feather.replace()
+        </script>
+
+        <!-- Graphs -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+        <script src="/js/jquery.easypiechart.js"></script>
+        <script>
+            var day1N = $("#day1N").val();
+            var day1U = $("#day1U").val();
+            var day2N = $("#day2N").val();
+            var day2U = $("#day2U").val();
+            var day3N = $("#day3N").val();
+            var day3U = $("#day3U").val();
+            var day4N = $("#day4N").val();
+            var day4U = $("#day4U").val();
+            var day5N = $("#day5N").val();
+            var day5U = $("#day5U").val();
+            var day6N = $("#day6N").val();
+            var day6U = $("#day6U").val();
+            var day7N = $("#day7N").val();
+            var day7U = $("#day7U").val();
+
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [day1N, day2N, day3N, day4N, day5N, day6N, day7N],
+                    datasets: [{
+                        data: [day1U, day2U, day3U, day4U, day5U, day6U, day7U],
+                        lineTension: 0,
+                        backgroundColor: 'transparent',
+                        borderColor: '#007bff',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false,
+                    }
+                }
+            });
+
+            let dash = document.getElementById("dashboard");
+            let users = document.getElementById("users");
+            let inte = document.getElementById("inte");
+            let reports = document.getElementById("reports");
+            let dashDiv = document.getElementById("dashboardDiv");
+            let usersDiv = document.getElementById("usersDiv");
+            let reportsDiv = document.getElementById("reportsDiv");
+            let inteDiv = document.getElementById("inteDiv");
+
+            function fix() {
+                if(dashDiv.classList.contains("bounceOutRight")){
+                    dashDiv.classList.remove("bounceOutRight", "animated");
+                }
+                if(usersDiv.classList.contains("bounceOutRight")){
+                    usersDiv.classList.remove("bounceOutRight", "animated");
+                }
+                if(reportsDiv.classList.contains("bounceOutRight")){
+                    reportsDiv.classList.remove("bounceOutRight", "animated");  
+                }
+                if(inteDiv.classList.contains("bounceOutRight")){
+                    inteDiv.classList.remove("bounceOutRight", "animated");
+                }
+                if (dashDiv.classList.contains("bounceInRight")) {
+                    dashDiv.classList.remove("bounceInRight", "animated");
+                }
+                if (usersDiv.classList.contains("bounceInRight")) {
+                    usersDiv.classList.remove("bounceInRight", "animated");
+                }
+                if (reportsDiv.classList.contains("bounceInRight")) {
+                    reportsDiv.classList.remove("bounceInRight", "animated");
+                }
+                if (inteDiv.classList.contains("bounceInRight")) {
+                    inteDiv.classList.remove("bounceInRight", "animated");
+                }
+            }
+
+            dash.addEventListener('click', function () {
+                if (!dash.classList.contains("active")) {
+                    dash.classList.add("active");
+                }
+
+                if (users.classList.contains("active")) {
+                    users.classList.remove("active");
+                }
+
+                if (inte.classList.contains("active")) {
+                    inte.classList.remove("active");
+                }
+
+                if (reports.classList.contains("active")) {
+                    reports.classList.remove("active");
+                }
+
+                //Animations
+
+                if (!usersDiv.classList.contains("bounceOutRight") && !usersDiv.classList.contains("animated")) {
+                    usersDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!reportsDiv.classList.contains("bounceOutRight") && !reportsDiv.classList.contains("animated")) {
+                    reportsDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!inteDiv.classList.contains("bounceOutRight") && !inteDiv.classList.contains("animated")) {
+                    inteDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!dashDiv.classList.contains("bounceInRight") && !dashDiv.classList.contains("animated")) {
+                    dashDiv.classList.add("bounceInRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                setTimeout(fix, 1500);
+
+                //Animations End
+
+                function disp() {
+                    dashDiv.style.display = "block";
+                    usersDiv.style.display = "none";
+                    reportsDiv.style.display = "none";
+                    inteDiv.style.display = "none";
+                }
+            })
+
+            users.addEventListener('click', function () {
+                if (dash.classList.contains("active")) {
+                    dash.classList.remove("active");
+                }
+
+                if (!users.classList.contains("active")) {
+                    users.classList.add("active");
+                }
+
+                if (inte.classList.contains("active")) {
+                    inte.classList.remove("active");
+                }
+
+                if (reports.classList.contains("active")) {
+                    reports.classList.remove("active");
+                }
+
+                //Animations
+
+                if (!dashDiv.classList.contains("bounceOutRight") && !dashDiv.classList.contains("animated")){
+                    dashDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!reportsDiv.classList.contains("bounceOutRight") && !reportsDiv.classList.contains("animated")) {
+                    reportsDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!inteDiv.classList.contains("bounceOutRight") && !inteDiv.classList.contains("animated")) {
+                    inteDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!usersDiv.classList.contains("bounceInRight") && !usersDiv.classList.contains("animated")) {
+                    usersDiv.classList.add("bounceInRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                setTimeout(fix, 1500)
+
+                //Animations End
+
+                function disp() {
+                    dashDiv.style.display = "none";
+                    usersDiv.style.display = "block";
+                    reportsDiv.style.display = "none";
+                    inteDiv.style.display = "none";
+                }
+            })
+
+            inte.addEventListener('click', function () {
+                if (dash.classList.contains("active")) {
+                    dash.classList.remove("active");
+                }
+
+                if (users.classList.contains("active")) {
+                    users.classList.remove("active");
+                }
+
+                if (!inte.classList.contains("active")) {
+                    inte.classList.add("active");
+                }
+
+                if (reports.classList.contains("active")) {
+                    reports.classList.remove("active");
+                }
+
+                //Animations
+
+                if (!dashDiv.classList.contains("bounceOutRight") && !dashDiv.classList.contains("animated")) {
+                    dashDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!usersDiv.classList.contains("bounceOutRight") && !usersDiv.classList.contains("animated")) {
+                    usersDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!reportsDiv.classList.contains("bounceOutRight") && !reportsDiv.classList.contains("animated")) {
+                    reportsDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!inteDiv.classList.contains("bounceInRight") && !inteDiv.classList.contains("animated")) {
+                    inteDiv.classList.add("bounceInRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                setTimeout(fix, 1500)
+
+                //Animations End
+
+                function disp() {
+                    dashDiv.style.display = "none";
+                    usersDiv.style.display = "none";
+                    reportsDiv.style.display = "none";
+                    inteDiv.style.display = "block";
+                }
+            })
+
+            reports.addEventListener('click', function () {
+                if (dash.classList.contains("active")) {
+                    dash.classList.remove("active");
+                }
+
+                if (users.classList.contains("active")) {
+                    users.classList.remove("active");
+                }
+
+                if (inte.classList.contains("active")) {
+                    inte.classList.remove("active");
+                }
+
+                if (!reports.classList.contains("active")) {
+                    reports.classList.add("active");
+                }
+
+                //Animations
+
+                if (!dashDiv.classList.contains("bounceOutRight") && !dashDiv.classList.contains("animated")) {
+                    dashDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!usersDiv.classList.contains("bounceOutRight") && !usersDiv.classList.contains("animated")) {
+                    usersDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!inteDiv.classList.contains("bounceOutRight") && !inteDiv.classList.contains("animated")) {
+                    inteDiv.classList.add("bounceOutRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                if (!reportsDiv.classList.contains("bounceInRight") && !reportsDiv.classList.contains("animated")) {
+                    reportsDiv.classList.add("bounceInRight", "animated");
+                    setTimeout(disp, 750);
+                }
+
+                setTimeout(fix, 1500)
+
+                //Animations End
+
+                function disp() {
+                    dashDiv.style.display = "none";
+                    usersDiv.style.display = "none";
+                    reportsDiv.style.display = "block";
+                    inteDiv.style.display = "none";
+                }
+            })
+
+            $(function () {
+                $(".chart").easyPieChart({
+                    barColor: '#007bff',
+                    trackColor: '#c1c1c1',
+                    size: 330
+                });
+            });
+
+            let title = document.getElementById("title");
+            let botsBtn = document.getElementById("botsBtn");
+            let usersBtn = document.getElementById("usersBtn");
+            let usrList = document.getElementById("user-list");
+            let botList = document.getElementById("bot-div");
+            let drop = document.getElementById("dropdown01");
+
+            botsBtn.addEventListener('click', function(){
+                usrList.style.display = 'none';
+                botList.style.display = 'block';
+                title.innerText = 'Bots';
+                botsBtn.style.display = 'none';
+                usersBtn.style.display = 'block';
+                drop.innerText = 'Bots';
+            });
+
+            usersBtn.addEventListener('click', function () {
+                usrList.style.display = 'block';
+                botList.style.display = 'none';
+                title.innerText = 'Users';
+                botsBtn.style.display = 'block';
+                usersBtn.style.display = 'none';
+                drop.innerText = 'Users';
+            });
+        </script>
+    </body>
+</html>

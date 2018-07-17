@@ -1,0 +1,90 @@
+<h1>Account</h1>
+
+<div display="flex">
+    <button class="btn btn-default" id="modalbtn">Edit</button>
+    {{#unless user.discordUsername}}
+    <a class="btn btn-default" href="https://discordapp.com/api/oauth2/authorize?client_id=464733499073626112&redirect_uri=http%3A%2F%2Fxlr8.glitch.me%2Faccount%2Fdiscord%2Fdone&response_type=code&scope=identify%20guilds">Connect Discord Account</a>
+    {{/unless}}
+</div>
+<br>
+
+<div id="simpleModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="closebtn" id="closebtn">&times;</span>
+            <h2><span class="decor">Edit</span></h2>
+            <br>
+            <p class="lead">
+            Leave the text blocks as is if you do not want to change them.
+            <br>
+            You will be logged out if you make changes.
+            <br>
+            If you do not wish to change your bio, set the field to <strong>no</strong>
+            </p>
+        </div>
+        <form action="/account" method="post" class="marginaddbottom">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Username" value={{ user.username }}>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" name="email" placeholder="Email" value={{ user.email }}>
+        </div>
+        <div class="form-group">
+            <label>Bio</label>
+            <input type="text" class="form-control" name="bio" placeholder="Bio" value="no">
+        </div>
+        <button type="submit" class="btn btn-default">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    var modal = document.getElementById("simpleModal");
+    var modalbtn = document.getElementById("modalbtn");
+    var closebtn = document.getElementById("closebtn");
+
+    modalbtn.addEventListener("click", openModal);
+    closebtn.addEventListener('click', closeModal);
+    window.addEventListener('click', clickOutside);
+
+    function openModal() {
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    function clickOutside(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+<br>
+<div class="jumbotron bounceInLeft animated">
+    <h2>{{user.username}}</h2>
+    <h3>Bio</h3>
+    <p class="lead">{{user.bio}}</p>
+    <br>
+    <h3>Email</h3>
+    <p class="lead">{{user.email}}</p>
+    <br>
+    <h3>Site Admin</h3>
+    {{#if user.admin}}
+    <p class="lead">True</p>
+    {{else}}
+    <p class="lead">False</p>
+    {{/if}}
+    {{#if user.discordUsername}}
+        <br>
+        <h3>Discord Server Perks</h3>
+        <p class="lead">Enabled</p>
+        <br>
+        <h3>Discord Account Connected</h3>
+        <p class="lead">True</p>
+    {{/if}}
+</div>

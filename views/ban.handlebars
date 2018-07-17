@@ -1,0 +1,8 @@
+<h2 class="page-header">Approve banning user with id of <strong>{{id}}</strong>?</h2>
+<p class="lead">Type <strong>Approved</strong> into the field below to approve.</p>
+<form action="/server/user/ban/{{id}}/approved" method="post">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="Approve?" name="approved">
+    </div>
+    <button type="submit" class="btn btn-default">Ban</button>
+</form>

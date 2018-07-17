@@ -1,0 +1,36 @@
+{
+  "name": "loginsystem",
+  "version": "1.0.0",
+  "description": "A simple login app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dylan Davies",
+  "license": "ISC",
+  "dependencies": {
+    "ascii-art": "^1.4.3",
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "btoa": "^1.2.1",
+    "connect-flash": "*",
+    "cookie-parser": "^1.4.1",
+    "discord.js": "^11.3.2",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mobile-detect": "^1.4.2",
+    "moment": "^2.22.2",
+    "moment-duration-format": "^2.2.2",
+    "mongodb": "*",
+    "mongoose": "*",
+    "node-fetch": "^2.1.2",
+    "nodemailer": "^4.6.7",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "quick.db": "^3.0.3"
+  }
+}
