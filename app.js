@@ -2,11 +2,11 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const datab = require("quick.db");
 const bot = new Discord.Client();
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+const mongo = require('mongodb');
+const mongoose = require('mongoose');
 const moment = require("moment");
 //Not found in GitHub
-let secrets = require('./secrets.json');
+let secrets = require("./secrets.json");
 
 bot.prefix = "?";
 bot.ownerID = `${secrets.ownerID}`;
