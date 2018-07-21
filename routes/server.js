@@ -1,5 +1,5 @@
 let express = require("express");
-let bot = require("../app");
+let bot = require("../app").bot;
 let router = express.Router();
 
 function handleRedirect(req, res) {
@@ -21,7 +21,7 @@ router.get("/invite", handleRedirect);
 router.get("/user", (req, res) => {
     res.render("user");
 });
-        
+
 router.post("/user/submit", function (req, res) {
     let id = req.body.id;
     res.redirect("/server/user/" + id);

@@ -9,7 +9,7 @@ const http = require("http");
 
 var User = require('../models/user');
 let Week = require("../models/usersJoined");
-let bot = require("../app");
+let bot = require("../app").bot;
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -172,7 +172,7 @@ router.get("/admin"/*, ensureAuthenticated*/, async function(req, res){
     await Promise.resolve(we).then(result => {
         json = result;
     })
-    
+
     let members = bot.guilds.get("461165458049990666").members.filter(m => !m.user.bot).size;
     let goal = 250;
     let percent = (members / goal) * 100;

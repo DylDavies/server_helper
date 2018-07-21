@@ -1,0 +1,93 @@
+#desktop{
+  display: none;
+}
+
+#phone{
+    padding: 5% 6% 0 6%;
+    display: none;
+}
+
+#tablet{
+    padding: 2% 12% 0 12%;
+    display: none;
+}
+
+nav ul li{
+  list-style: none;
+}
+
+.jumbotron ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.padd {
+    padding-bottom: 15px;
+}
+
+.btn-hover:hover {
+    background-color: darkgreen;
+}
+
+.size {
+    height: 60px;
+}
+
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content{
+    background-color: #f4f4f4;
+    margin: 10% auto;
+    padding: 0px 20px;
+    width: 70%;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
+    animation-name: modalopen;
+    animation-duration: 1s;
+}
+
+.modal-header h2{
+    margin:0;
+}
+
+.modal-header{
+    background-color: lightgrey;
+    padding: 15px;
+}
+
+.closebtn{
+    color: rgb(146, 146, 146);
+    float: right;
+    font-size: 30px;
+}
+
+.closebtn:hover,.closebtn:focus{
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+.marginaddbottom{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.decor{
+    text-decoration: underline;
+}
+
+@keyframes modalopen{
+    from{opacity: 0}
+    to{opacity: 1}
+}

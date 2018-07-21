@@ -1,10 +1,13 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const datab = require("quick.db");
-const bot = new Discord.Client();
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const moment = require("moment");
+const chalk = require("chalk");
+
+const bot = new Discord.Client();
+
 //Not found in GitHub
 let secrets = require("./secrets.json");
 
@@ -13,7 +16,7 @@ bot.ownerID = `${secrets.ownerID}`;
 bot.status = "Offline (Maintainance)"
 bot.commands = new Discord.Collection();
 
-mongoose.connect(`mongodb://${secrets.username}:${secrets.password}@ds125341.mlab.com:25341/${secrets.database}`);
+mongoose.connect(`mongodb://${secrets.username}:${secrets.password}@ds125341.mlab.com:25341/${secrets.database}`, { useNewUrlParser: true });
 var db = mongoose.connection;
 let discordUser = require("./models/discordUsers");
 let Week = require("./models/usersJoined");
@@ -24,15 +27,15 @@ fs.readdir("./commands/", (err, files) => {
     let jsfiles = files.filter(f => f.split(".").pop() === "js");
 
     if (jsfiles.length <= 0) {
-        console.log('\x1b[31m%s\x1b[0m', 'No commands to load');
+        console.log(chalk.red("No Commands To Load!"));
         return;
     }
 
-    console.log('\x1b[31m%s\x1b[0m', 'Loading ' + jsfiles.length + ' commands!');
+    console.log(chalk.blue("Loading ") + chalk.yellow(jsfiles.length) + chalk.blue(" Commands!"));
 
     jsfiles.forEach((f, i) => {
         let props = require('./commands/' + f);
-        console.log('\x1b[31m%s\x1b[0m', `${i + 1} | Loading Command: ${props.help.name}. 👌`);
+        console.log(chalk.yellow(`${i + 1}`) + " | " + chalk.cyan("Loading Command: ") + chalk.bgWhite.black(`${props.help.name}`) + chalk.cyan("!"));
         bot.commands.set(props.help.name, props);
     });
 });
@@ -46,7 +49,7 @@ const serverStats = {
 bot.login(secrets.token);
 
 bot.on("ready", () => {
-    console.log('\x1b[31m%s\x1b[0m', `Ready!`);
+    console.log(chalk.magenta("Ready!"));
     bot.user.setActivity(`Listening for ${bot.prefix}help`);
     bot.status = "Online"
 });
@@ -109,11 +112,13 @@ bot.on("guildMemberRemove", async member => {
     await Week.updateDay(false);
 });
 
+//Server
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
+var exphbs = require('express-handlebars').create({ defaultLayout: 'layout', helpers: { json: function (content) { return JSON.stringify(content);}}});
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -121,7 +126,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 //Give routes bot var
-module.exports = bot;
+module.exports.bot = bot;
 
 //Routes
 var routes = require('./routes/index');
@@ -134,7 +139,7 @@ var app = express();
 
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({ defaultLayout: 'layout', helpers: { json: function (content) { return JSON.stringify(content);}}}));
+app.engine('handlebars', exphbs.engine);
 app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
@@ -208,13 +213,15 @@ app.use((err, req, res, next) => {
 
 //404 Middleware
 app.use((req, res) => {
-    res.status(404)
+    res.status(404);
     res.render("404");
 })
 
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 6000));
 
 app.listen(app.get('port'), function () {
     console.log('Server started on port ' + app.get('port'));
 });
+
+module.exports.app = app;

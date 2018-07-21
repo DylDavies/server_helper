@@ -3,7 +3,7 @@ let datab = require("quick.db");
 let User = require("../models/user");
 const moment = require("moment")
 require("moment-duration-format");
-let bot = require("../app");
+let bot = require("../app").bot;
 var express = require('express');
 var router = express.Router();
 
